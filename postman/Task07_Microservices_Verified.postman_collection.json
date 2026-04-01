@@ -1,0 +1,2810 @@
+{
+  "info": {
+    "name": "Task07_Microservices_Verified",
+    "_postman_id": "7bfe2e19-7b17-44ba-9e96-b9397c6d0b22",
+    "description": "Verified microservices collection generated after executing all endpoints successfully. Tokens and IDs are captured into collection variables automatically.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Gateway Root",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Gateway Root Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"API Gateway is running\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Auth Users Initial",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/users",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "auth",
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Auth Users Initial Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/users",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "auth",
+                    "users"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"count\": 3,\n  \"data\": [\n    {\n      \"userId\": \"1\",\n      \"username\": \"student1\",\n      \"role\": \"student\"\n    },\n    {\n      \"userId\": \"2\",\n      \"username\": \"teacher1\",\n      \"role\": \"teacher\"\n    },\n    {\n      \"userId\": \"3\",\n      \"username\": \"admin1\",\n      \"role\": \"admin\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Register Student",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"student2\",\n  \"password\": \"123456\",\n  \"role\": \"student\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Register Student Example Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/register",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "auth",
+                    "register"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"student2\",\n  \"password\": \"123456\",\n  \"role\": \"student\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User registered successfully\",\n  \"data\": {\n    \"userId\": \"4\",\n    \"username\": \"student2\",\n    \"role\": \"student\"\n  },\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json();",
+                  "pm.collectionVariables.set('studentToken', data.token);",
+                  "pm.collectionVariables.set('studentUserId', data.data.userId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register Teacher",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"teacher2\",\n  \"password\": \"123456\",\n  \"role\": \"teacher\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Register Teacher Example Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/register",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "auth",
+                    "register"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"teacher2\",\n  \"password\": \"123456\",\n  \"role\": \"teacher\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User registered successfully\",\n  \"data\": {\n    \"userId\": \"5\",\n    \"username\": \"teacher2\",\n    \"role\": \"teacher\"\n  },\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json();",
+                  "pm.collectionVariables.set('teacherToken', data.token);",
+                  "pm.collectionVariables.set('teacherUserId', data.data.userId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login Default Student1",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"student1\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Login Default Student1 Example Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"student1\",\n  \"password\": \"123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Login successful\",\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwidXNlcm5hbWUiOiJzdHVkZW50MSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.30b1M7gOBlT4vr7KFCC82TvVVj_KQz62OIpEvjIsp4Q\",\n  \"data\": {\n    \"userId\": \"1\",\n    \"username\": \"student1\",\n    \"role\": \"student\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login Default Teacher1",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"teacher1\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Login Default Teacher1 Example Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"teacher1\",\n  \"password\": \"123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Login successful\",\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyIiwidXNlcm5hbWUiOiJ0ZWFjaGVyMSIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.mW1nRLG05voSqDS5DEnW58ducGKFdGX6-bFw7h_KLL0\",\n  \"data\": {\n    \"userId\": \"2\",\n    \"username\": \"teacher1\",\n    \"role\": \"teacher\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Auth Users After Register",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/users",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "auth",
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Auth Users After Register Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/users",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "auth",
+                    "users"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"count\": 5,\n  \"data\": [\n    {\n      \"userId\": \"1\",\n      \"username\": \"student1\",\n      \"role\": \"student\"\n    },\n    {\n      \"userId\": \"2\",\n      \"username\": \"teacher1\",\n      \"role\": \"teacher\"\n    },\n    {\n      \"userId\": \"3\",\n      \"username\": \"admin1\",\n      \"role\": \"admin\"\n    },\n    {\n      \"userId\": \"4\",\n      \"username\": \"student2\",\n      \"role\": \"student\"\n    },\n    {\n      \"userId\": \"5\",\n      \"username\": \"teacher2\",\n      \"role\": \"teacher\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Auth Root Direct",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{authServiceUrl}}/",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{authServiceUrl}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Auth Root Direct Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{authServiceUrl}}/",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{authServiceUrl}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Authentication Service is running\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Teacher",
+      "item": [
+        {
+          "name": "Teacher Profile Auth Check",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "auth",
+                "profile"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Teacher Profile Auth Check Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/profile",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "auth",
+                    "profile"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Protected profile data\",\n  \"user\": {\n    \"userId\": \"5\",\n    \"username\": \"teacher2\",\n    \"role\": \"teacher\",\n    \"iat\": 1775008608,\n    \"exp\": 1775095008\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Teacher Search Students",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/students/search",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "students",
+                "search"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Teacher Search Students Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/students/search",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "students",
+                    "search"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Students search results\",\n  \"data\": [\n    {\n      \"_id\": \"000000000000000000000001\",\n      \"userId\": \"4\",\n      \"username\": \"student2\",\n      \"fullName\": \"Student Two\",\n      \"email\": \"student2@example.com\",\n      \"department\": \"Computer Science\",\n      \"yearLevel\": \"Year 4\",\n      \"createdAt\": \"2026-04-01T01:56:48.196Z\",\n      \"updatedAt\": \"2026-04-01T01:56:48.219Z\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Teacher Get Student By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/students/{{studentProfileId}}",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "students",
+                "{{studentProfileId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Teacher Get Student By ID Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/students/{{studentProfileId}}",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "students",
+                    "{{studentProfileId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Student profile fetched successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000001\",\n    \"userId\": \"4\",\n    \"username\": \"student2\",\n    \"fullName\": \"Student Two\",\n    \"email\": \"student2@example.com\",\n    \"department\": \"Computer Science\",\n    \"yearLevel\": \"Year 4\",\n    \"createdAt\": \"2026-04-01T01:56:48.196Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.219Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Assignment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/assignments",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "assignments"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Microservices Homework\",\n  \"description\": \"Build and test the full microservices workflow\",\n  \"subject\": \"Distributed Systems\",\n  \"dueDate\": \"2026-04-10T12:00:00.000Z\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Create Assignment Example Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/assignments",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "assignments"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Microservices Homework\",\n  \"description\": \"Build and test the full microservices workflow\",\n  \"subject\": \"Distributed Systems\",\n  \"dueDate\": \"2026-04-10T12:00:00.000Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Assignment created successfully\",\n  \"data\": {\n    \"_id\": \"0000000000000000000003e9\",\n    \"teacherId\": \"0000000000000000000003e8\",\n    \"teacherUserId\": \"5\",\n    \"title\": \"Microservices Homework\",\n    \"description\": \"Build and test the full microservices workflow\",\n    \"subject\": \"Distributed Systems\",\n    \"dueDate\": \"2026-04-10T12:00:00.000Z\",\n    \"isActive\": true,\n    \"createdAt\": \"2026-04-01T01:56:48.295Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.295Z\"\n  }\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('assignmentId', pm.response.json().data._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List Teacher Assignments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/assignments",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "assignments"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List Teacher Assignments Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/assignments",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "assignments"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Assignments retrieved successfully\",\n  \"count\": 1,\n  \"data\": [\n    {\n      \"_id\": \"0000000000000000000003e9\",\n      \"teacherId\": \"0000000000000000000003e8\",\n      \"teacherUserId\": \"5\",\n      \"title\": \"Microservices Homework\",\n      \"description\": \"Build and test the full microservices workflow\",\n      \"subject\": \"Distributed Systems\",\n      \"dueDate\": \"2026-04-10T12:00:00.000Z\",\n      \"isActive\": true,\n      \"createdAt\": \"2026-04-01T01:56:48.295Z\",\n      \"updatedAt\": \"2026-04-01T01:56:48.295Z\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Assignment By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/assignments/{{assignmentId}}",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "assignments",
+                "{{assignmentId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Assignment By ID Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/assignments/{{assignmentId}}",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "assignments",
+                    "{{assignmentId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Assignment retrieved successfully\",\n  \"data\": {\n    \"_id\": \"0000000000000000000003e9\",\n    \"teacherId\": \"0000000000000000000003e8\",\n    \"teacherUserId\": \"5\",\n    \"title\": \"Microservices Homework\",\n    \"description\": \"Build and test the full microservices workflow\",\n    \"subject\": \"Distributed Systems\",\n    \"dueDate\": \"2026-04-10T12:00:00.000Z\",\n    \"isActive\": true,\n    \"createdAt\": \"2026-04-01T01:56:48.295Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.295Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Assignment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/assignments/{{assignmentId}}",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "assignments",
+                "{{assignmentId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Microservices Homework Final\",\n  \"subject\": \"Software Architecture\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Update Assignment Example Response",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/assignments/{{assignmentId}}",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "assignments",
+                    "{{assignmentId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Microservices Homework Final\",\n  \"subject\": \"Software Architecture\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Assignment updated successfully\",\n  \"data\": {\n    \"_id\": \"0000000000000000000003e9\",\n    \"teacherId\": \"0000000000000000000003e8\",\n    \"teacherUserId\": \"5\",\n    \"title\": \"Microservices Homework Final\",\n    \"description\": \"Build and test the full microservices workflow\",\n    \"subject\": \"Software Architecture\",\n    \"dueDate\": \"2026-04-10T12:00:00.000Z\",\n    \"isActive\": true,\n    \"createdAt\": \"2026-04-01T01:56:48.295Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.319Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Public Assignments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/assignments/public",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "assignments",
+                "public"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List Public Assignments Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/assignments/public",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "assignments",
+                    "public"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Public assignments retrieved successfully\",\n  \"count\": 1,\n  \"data\": [\n    {\n      \"_id\": \"0000000000000000000003e9\",\n      \"teacherId\": \"0000000000000000000003e8\",\n      \"teacherUserId\": \"5\",\n      \"title\": \"Microservices Homework Final\",\n      \"description\": \"Build and test the full microservices workflow\",\n      \"subject\": \"Software Architecture\",\n      \"dueDate\": \"2026-04-10T12:00:00.000Z\",\n      \"isActive\": true,\n      \"createdAt\": \"2026-04-01T01:56:48.295Z\",\n      \"updatedAt\": \"2026-04-01T01:56:48.319Z\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Public Assignment By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/assignments/public/{{assignmentId}}",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "assignments",
+                "public",
+                "{{assignmentId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Public Assignment By ID Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/assignments/public/{{assignmentId}}",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "assignments",
+                    "public",
+                    "{{assignmentId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Assignment retrieved successfully\",\n  \"data\": {\n    \"_id\": \"0000000000000000000003e9\",\n    \"teacherId\": \"0000000000000000000003e8\",\n    \"teacherUserId\": \"5\",\n    \"title\": \"Microservices Homework Final\",\n    \"description\": \"Build and test the full microservices workflow\",\n    \"subject\": \"Software Architecture\",\n    \"dueDate\": \"2026-04-10T12:00:00.000Z\",\n    \"isActive\": true,\n    \"createdAt\": \"2026-04-01T01:56:48.295Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.319Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Teacher Review Submission",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/submissions/{{submissionId}}/review",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "submissions",
+                "{{submissionId}}",
+                "review"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"score\": 95,\n  \"feedback\": \"Good structure and successful API integration.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Teacher Review Submission Example Response",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/submissions/{{submissionId}}/review",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "submissions",
+                    "{{submissionId}}",
+                    "review"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"score\": 95,\n  \"feedback\": \"Good structure and successful API integration.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Submission reviewed successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000002\",\n    \"studentId\": \"000000000000000000000001\",\n    \"studentUserId\": \"4\",\n    \"assignmentId\": \"0000000000000000000003e9\",\n    \"title\": \"My Submission\",\n    \"content\": \"Updated content before teacher review.\",\n    \"status\": \"reviewed\",\n    \"score\": 95,\n    \"feedback\": \"Good structure and successful API integration.\",\n    \"submittedAt\": \"2026-04-01T01:56:48.384Z\",\n    \"createdAt\": \"2026-04-01T01:56:48.384Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.422Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Assignment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/assignments/{{assignmentId}}",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "assignments",
+                "{{assignmentId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete Assignment Example Response",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/assignments/{{assignmentId}}",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "assignments",
+                    "{{assignmentId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Assignment deleted successfully (soft delete)\",\n  \"data\": {\n    \"_id\": \"0000000000000000000003e9\",\n    \"teacherId\": \"0000000000000000000003e8\",\n    \"teacherUserId\": \"5\",\n    \"title\": \"Microservices Homework Final\",\n    \"description\": \"Build and test the full microservices workflow\",\n    \"subject\": \"Software Architecture\",\n    \"dueDate\": \"2026-04-10T12:00:00.000Z\",\n    \"isActive\": false,\n    \"createdAt\": \"2026-04-01T01:56:48.295Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.441Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Teacher Assignments After Delete",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/assignments",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "assignments"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List Teacher Assignments After Delete Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/assignments",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "assignments"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Assignments retrieved successfully\",\n  \"count\": 1,\n  \"data\": [\n    {\n      \"_id\": \"0000000000000000000003e9\",\n      \"teacherId\": \"0000000000000000000003e8\",\n      \"teacherUserId\": \"5\",\n      \"title\": \"Microservices Homework Final\",\n      \"description\": \"Build and test the full microservices workflow\",\n      \"subject\": \"Software Architecture\",\n      \"dueDate\": \"2026-04-10T12:00:00.000Z\",\n      \"isActive\": false,\n      \"createdAt\": \"2026-04-01T01:56:48.295Z\",\n      \"updatedAt\": \"2026-04-01T01:56:48.441Z\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Public Assignments After Delete",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/assignments/public",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "assignments",
+                "public"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List Public Assignments After Delete Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/assignments/public",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "assignments",
+                    "public"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Public assignments retrieved successfully\",\n  \"count\": 0,\n  \"data\": []\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Student",
+      "item": [
+        {
+          "name": "Student Profile Auth Check",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "auth",
+                "profile"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Student Profile Auth Check Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/profile",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "auth",
+                    "profile"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Protected profile data\",\n  \"user\": {\n    \"userId\": \"4\",\n    \"username\": \"student2\",\n    \"role\": \"student\",\n    \"iat\": 1775008608,\n    \"exp\": 1775095008\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Teacher Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/profile",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "profile"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Teacher Two\",\n  \"email\": \"teacher2@example.com\",\n  \"faculty\": \"Information Technology\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Create Teacher Profile Example Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/profile",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "profile"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fullName\": \"Teacher Two\",\n  \"email\": \"teacher2@example.com\",\n  \"faculty\": \"Information Technology\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Teacher profile created successfully\",\n  \"data\": {\n    \"_id\": \"0000000000000000000003e8\",\n    \"userId\": \"5\",\n    \"username\": \"teacher2\",\n    \"fullName\": \"Teacher Two\",\n    \"email\": \"teacher2@example.com\",\n    \"faculty\": \"Information Technology\",\n    \"createdAt\": \"2026-04-01T01:56:48.134Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.135Z\"\n  }\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('teacherProfileId', pm.response.json().data._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Teacher Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/me",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Teacher Profile Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/me",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Teacher profile retrieved successfully\",\n  \"data\": {\n    \"_id\": \"0000000000000000000003e8\",\n    \"userId\": \"5\",\n    \"username\": \"teacher2\",\n    \"fullName\": \"Teacher Two\",\n    \"email\": \"teacher2@example.com\",\n    \"faculty\": \"Information Technology\",\n    \"createdAt\": \"2026-04-01T01:56:48.134Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.135Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Teacher Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/me",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Teacher Two Updated\",\n  \"faculty\": \"Engineering\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Update Teacher Profile Example Response",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/me",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "me"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fullName\": \"Teacher Two Updated\",\n  \"faculty\": \"Engineering\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Teacher profile updated successfully\",\n  \"data\": {\n    \"_id\": \"0000000000000000000003e8\",\n    \"userId\": \"5\",\n    \"username\": \"teacher2\",\n    \"fullName\": \"Teacher Two Updated\",\n    \"email\": \"teacher2@example.com\",\n    \"faculty\": \"Engineering\",\n    \"createdAt\": \"2026-04-01T01:56:48.134Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.155Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Teacher Profile After Update",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teachers/me",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "teachers",
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Teacher Profile After Update Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/teachers/me",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "teachers",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Teacher profile retrieved successfully\",\n  \"data\": {\n    \"_id\": \"0000000000000000000003e8\",\n    \"userId\": \"5\",\n    \"username\": \"teacher2\",\n    \"fullName\": \"Teacher Two Updated\",\n    \"email\": \"teacher2@example.com\",\n    \"faculty\": \"Engineering\",\n    \"createdAt\": \"2026-04-01T01:56:48.134Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.155Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Student Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/profile",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "profile"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Student Two\",\n  \"email\": \"student2@example.com\",\n  \"department\": \"IT\",\n  \"yearLevel\": \"Year 4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Create Student Profile Example Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/students/profile",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "profile"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fullName\": \"Student Two\",\n  \"email\": \"student2@example.com\",\n  \"department\": \"IT\",\n  \"yearLevel\": \"Year 4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Student profile created successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000001\",\n    \"userId\": \"4\",\n    \"username\": \"student2\",\n    \"fullName\": \"Student Two\",\n    \"email\": \"student2@example.com\",\n    \"department\": \"IT\",\n    \"yearLevel\": \"Year 4\",\n    \"createdAt\": \"2026-04-01T01:56:48.196Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.196Z\"\n  }\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('studentProfileId', pm.response.json().data._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Student Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/me",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Student Profile Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/students/me",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Student profile fetched successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000001\",\n    \"userId\": \"4\",\n    \"username\": \"student2\",\n    \"fullName\": \"Student Two\",\n    \"email\": \"student2@example.com\",\n    \"department\": \"IT\",\n    \"yearLevel\": \"Year 4\",\n    \"createdAt\": \"2026-04-01T01:56:48.196Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.196Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Student Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/me",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"department\": \"Computer Science\",\n  \"yearLevel\": \"Year 4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Update Student Profile Example Response",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/students/me",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "me"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"department\": \"Computer Science\",\n  \"yearLevel\": \"Year 4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Student profile updated successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000001\",\n    \"userId\": \"4\",\n    \"username\": \"student2\",\n    \"fullName\": \"Student Two\",\n    \"email\": \"student2@example.com\",\n    \"department\": \"Computer Science\",\n    \"yearLevel\": \"Year 4\",\n    \"createdAt\": \"2026-04-01T01:56:48.196Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.219Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Student Profile After Update",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/me",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Student Profile After Update Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/students/me",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Student profile fetched successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000001\",\n    \"userId\": \"4\",\n    \"username\": \"student2\",\n    \"fullName\": \"Student Two\",\n    \"email\": \"student2@example.com\",\n    \"department\": \"Computer Science\",\n    \"yearLevel\": \"Year 4\",\n    \"createdAt\": \"2026-04-01T01:56:48.196Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.219Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Direct Student Search Public",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/students/search",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "search"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Direct Student Search Public Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/students/search",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "search"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Students found\",\n  \"data\": [\n    {\n      \"_id\": \"000000000000000000000001\",\n      \"userId\": \"4\",\n      \"username\": \"student2\",\n      \"fullName\": \"Student Two\",\n      \"email\": \"student2@example.com\",\n      \"department\": \"Computer Science\",\n      \"yearLevel\": \"Year 4\",\n      \"createdAt\": \"2026-04-01T01:56:48.196Z\",\n      \"updatedAt\": \"2026-04-01T01:56:48.219Z\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Student List Assignments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/assignments",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "assignments"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Student List Assignments Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/students/assignments",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "assignments"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Public assignments retrieved successfully\",\n  \"count\": 1,\n  \"data\": [\n    {\n      \"_id\": \"0000000000000000000003e9\",\n      \"teacherId\": \"0000000000000000000003e8\",\n      \"teacherUserId\": \"5\",\n      \"title\": \"Microservices Homework Final\",\n      \"description\": \"Build and test the full microservices workflow\",\n      \"subject\": \"Software Architecture\",\n      \"dueDate\": \"2026-04-10T12:00:00.000Z\",\n      \"isActive\": true,\n      \"createdAt\": \"2026-04-01T01:56:48.295Z\",\n      \"updatedAt\": \"2026-04-01T01:56:48.319Z\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Student Get Assignment By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/assignments/{{assignmentId}}",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "assignments",
+                "{{assignmentId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Student Get Assignment By ID Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/students/assignments/{{assignmentId}}",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "assignments",
+                    "{{assignmentId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Assignment retrieved successfully\",\n  \"data\": {\n    \"_id\": \"0000000000000000000003e9\",\n    \"teacherId\": \"0000000000000000000003e8\",\n    \"teacherUserId\": \"5\",\n    \"title\": \"Microservices Homework Final\",\n    \"description\": \"Build and test the full microservices workflow\",\n    \"subject\": \"Software Architecture\",\n    \"dueDate\": \"2026-04-10T12:00:00.000Z\",\n    \"isActive\": true,\n    \"createdAt\": \"2026-04-01T01:56:48.295Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.319Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Submit Assignment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/assignments/submit",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "assignments",
+                "submit"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assignmentId\": \"{{assignmentId}}\",\n  \"title\": \"My Submission\",\n  \"content\": \"Implemented API gateway, auth, teacher, and student services.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Submit Assignment Example Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/students/assignments/submit",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "assignments",
+                    "submit"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"assignmentId\": \"{{assignmentId}}\",\n  \"title\": \"My Submission\",\n  \"content\": \"Implemented API gateway, auth, teacher, and student services.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Assignment submitted successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000002\",\n    \"studentId\": \"000000000000000000000001\",\n    \"studentUserId\": \"4\",\n    \"assignmentId\": \"0000000000000000000003e9\",\n    \"title\": \"My Submission\",\n    \"content\": \"Implemented API gateway, auth, teacher, and student services.\",\n    \"status\": \"submitted\",\n    \"score\": null,\n    \"feedback\": null,\n    \"submittedAt\": \"2026-04-01T01:56:48.384Z\",\n    \"createdAt\": \"2026-04-01T01:56:48.384Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.384Z\"\n  }\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('submissionId', pm.response.json().data._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List My Submissions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/assignments/my-submissions",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "assignments",
+                "my-submissions"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List My Submissions Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/students/assignments/my-submissions",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "assignments",
+                    "my-submissions"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Submissions retrieved successfully\",\n  \"data\": [\n    {\n      \"_id\": \"000000000000000000000002\",\n      \"studentId\": \"000000000000000000000001\",\n      \"studentUserId\": \"4\",\n      \"assignmentId\": \"0000000000000000000003e9\",\n      \"title\": \"My Submission\",\n      \"content\": \"Implemented API gateway, auth, teacher, and student services.\",\n      \"status\": \"submitted\",\n      \"score\": null,\n      \"feedback\": null,\n      \"submittedAt\": \"2026-04-01T01:56:48.384Z\",\n      \"createdAt\": \"2026-04-01T01:56:48.384Z\",\n      \"updatedAt\": \"2026-04-01T01:56:48.384Z\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Submission By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/assignments/submission/{{submissionId}}",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "assignments",
+                "submission",
+                "{{submissionId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Submission By ID Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/students/assignments/submission/{{submissionId}}",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "assignments",
+                    "submission",
+                    "{{submissionId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Submission retrieved successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000002\",\n    \"studentId\": \"000000000000000000000001\",\n    \"studentUserId\": \"4\",\n    \"assignmentId\": \"0000000000000000000003e9\",\n    \"title\": \"My Submission\",\n    \"content\": \"Implemented API gateway, auth, teacher, and student services.\",\n    \"status\": \"submitted\",\n    \"score\": null,\n    \"feedback\": null,\n    \"submittedAt\": \"2026-04-01T01:56:48.384Z\",\n    \"createdAt\": \"2026-04-01T01:56:48.384Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.384Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Submission",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/assignments/submission/{{submissionId}}",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "assignments",
+                "submission",
+                "{{submissionId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Updated content before teacher review.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Update Submission Example Response",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/students/assignments/submission/{{submissionId}}",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "assignments",
+                    "submission",
+                    "{{submissionId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"Updated content before teacher review.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Submission updated successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000002\",\n    \"studentId\": \"000000000000000000000001\",\n    \"studentUserId\": \"4\",\n    \"assignmentId\": \"0000000000000000000003e9\",\n    \"title\": \"My Submission\",\n    \"content\": \"Updated content before teacher review.\",\n    \"status\": \"submitted\",\n    \"score\": null,\n    \"feedback\": null,\n    \"submittedAt\": \"2026-04-01T01:56:48.384Z\",\n    \"createdAt\": \"2026-04-01T01:56:48.384Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.403Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Internal Get Submission",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/students/internal/{{submissionId}}",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "internal",
+                "{{submissionId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Internal Get Submission Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/students/internal/{{submissionId}}",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "internal",
+                    "{{submissionId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Submission retrieved successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000002\",\n    \"studentId\": \"000000000000000000000001\",\n    \"studentUserId\": \"4\",\n    \"assignmentId\": \"0000000000000000000003e9\",\n    \"title\": \"My Submission\",\n    \"content\": \"Updated content before teacher review.\",\n    \"status\": \"submitted\",\n    \"score\": null,\n    \"feedback\": null,\n    \"submittedAt\": \"2026-04-01T01:56:48.384Z\",\n    \"createdAt\": \"2026-04-01T01:56:48.384Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.403Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Submission After Review",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/assignments/submission/{{submissionId}}",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "assignments",
+                "submission",
+                "{{submissionId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Submission After Review Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/students/assignments/submission/{{submissionId}}",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "assignments",
+                    "submission",
+                    "{{submissionId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Submission retrieved successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000002\",\n    \"studentId\": \"000000000000000000000001\",\n    \"studentUserId\": \"4\",\n    \"assignmentId\": \"0000000000000000000003e9\",\n    \"title\": \"My Submission\",\n    \"content\": \"Updated content before teacher review.\",\n    \"status\": \"reviewed\",\n    \"score\": 95,\n    \"feedback\": \"Good structure and successful API integration.\",\n    \"submittedAt\": \"2026-04-01T01:56:48.384Z\",\n    \"createdAt\": \"2026-04-01T01:56:48.384Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.422Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Internal Get Submission After Review",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/students/internal/{{submissionId}}",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{baseUrl}}",
+                "students",
+                "internal",
+                "{{submissionId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Internal Get Submission After Review Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/students/internal/{{submissionId}}",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{baseUrl}}",
+                    "students",
+                    "internal",
+                    "{{submissionId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Submission retrieved successfully\",\n  \"data\": {\n    \"_id\": \"000000000000000000000002\",\n    \"studentId\": \"000000000000000000000001\",\n    \"studentUserId\": \"4\",\n    \"assignmentId\": \"0000000000000000000003e9\",\n    \"title\": \"My Submission\",\n    \"content\": \"Updated content before teacher review.\",\n    \"status\": \"reviewed\",\n    \"score\": 95,\n    \"feedback\": \"Good structure and successful API integration.\",\n    \"submittedAt\": \"2026-04-01T01:56:48.384Z\",\n    \"createdAt\": \"2026-04-01T01:56:48.384Z\",\n    \"updatedAt\": \"2026-04-01T01:56:48.422Z\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Direct Service Health",
+      "item": [
+        {
+          "name": "Student Health Direct",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{studentServiceUrl}}/health",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{studentServiceUrl}}",
+                "health"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Student Health Direct Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{studentServiceUrl}}/health",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{studentServiceUrl}}",
+                    "health"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Student Microservice is running\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Teacher Health Direct",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{teacherServiceUrl}}/health",
+              "protocol": "",
+              "host": [
+                null
+              ],
+              "path": [
+                "{{teacherServiceUrl}}",
+                "health"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Teacher Health Direct Example Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{teacherServiceUrl}}/health",
+                  "protocol": "",
+                  "host": [
+                    null
+                  ],
+                  "path": [
+                    "{{teacherServiceUrl}}",
+                    "health"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Teacher Microservice is running\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000"
+    },
+    {
+      "key": "studentServiceUrl",
+      "value": "http://localhost:5001"
+    },
+    {
+      "key": "teacherServiceUrl",
+      "value": "http://localhost:5002"
+    },
+    {
+      "key": "authServiceUrl",
+      "value": "http://localhost:5003"
+    },
+    {
+      "key": "studentToken",
+      "value": ""
+    },
+    {
+      "key": "teacherToken",
+      "value": ""
+    },
+    {
+      "key": "studentProfileId",
+      "value": ""
+    },
+    {
+      "key": "teacherProfileId",
+      "value": ""
+    },
+    {
+      "key": "assignmentId",
+      "value": ""
+    },
+    {
+      "key": "submissionId",
+      "value": ""
+    }
+  ]
+}
