@@ -1,0 +1,1207 @@
+{
+  "executed_at": "2026-04-01T01:56:48Z",
+  "base_url": "http://localhost:4000",
+  "variables": {
+    "student_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI",
+    "student_user": {
+      "userId": "4",
+      "username": "student2",
+      "role": "student"
+    },
+    "teacher_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM",
+    "teacher_user": {
+      "userId": "5",
+      "username": "teacher2",
+      "role": "teacher"
+    },
+    "teacher_profile_id": "0000000000000000000003e8",
+    "student_profile_id": "000000000000000000000001",
+    "assignment_id": "0000000000000000000003e9",
+    "submission_id": "000000000000000000000002"
+  },
+  "results": [
+    {
+      "name": "Gateway Root",
+      "method": "GET",
+      "url": "http://localhost:4000/",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "API Gateway is running"
+      }
+    },
+    {
+      "name": "Auth Users Initial",
+      "method": "GET",
+      "url": "http://localhost:4000/auth/users",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "count": 3,
+        "data": [
+          {
+            "userId": "1",
+            "username": "student1",
+            "role": "student"
+          },
+          {
+            "userId": "2",
+            "username": "teacher1",
+            "role": "teacher"
+          },
+          {
+            "userId": "3",
+            "username": "admin1",
+            "role": "admin"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Register Student",
+      "method": "POST",
+      "url": "http://localhost:4000/auth/register",
+      "status_code": 201,
+      "request": {
+        "headers": {},
+        "json": {
+          "username": "student2",
+          "password": "123456",
+          "role": "student"
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "User registered successfully",
+        "data": {
+          "userId": "4",
+          "username": "student2",
+          "role": "student"
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+      }
+    },
+    {
+      "name": "Register Teacher",
+      "method": "POST",
+      "url": "http://localhost:4000/auth/register",
+      "status_code": 201,
+      "request": {
+        "headers": {},
+        "json": {
+          "username": "teacher2",
+          "password": "123456",
+          "role": "teacher"
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "User registered successfully",
+        "data": {
+          "userId": "5",
+          "username": "teacher2",
+          "role": "teacher"
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+      }
+    },
+    {
+      "name": "Login Default Student1",
+      "method": "POST",
+      "url": "http://localhost:4000/auth/login",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": {
+          "username": "student1",
+          "password": "123456"
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Login successful",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwidXNlcm5hbWUiOiJzdHVkZW50MSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.30b1M7gOBlT4vr7KFCC82TvVVj_KQz62OIpEvjIsp4Q",
+        "data": {
+          "userId": "1",
+          "username": "student1",
+          "role": "student"
+        }
+      }
+    },
+    {
+      "name": "Login Default Teacher1",
+      "method": "POST",
+      "url": "http://localhost:4000/auth/login",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": {
+          "username": "teacher1",
+          "password": "123456"
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Login successful",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyIiwidXNlcm5hbWUiOiJ0ZWFjaGVyMSIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.mW1nRLG05voSqDS5DEnW58ducGKFdGX6-bFw7h_KLL0",
+        "data": {
+          "userId": "2",
+          "username": "teacher1",
+          "role": "teacher"
+        }
+      }
+    },
+    {
+      "name": "Student Profile Auth Check",
+      "method": "GET",
+      "url": "http://localhost:4000/auth/profile",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Protected profile data",
+        "user": {
+          "userId": "4",
+          "username": "student2",
+          "role": "student",
+          "iat": 1775008608,
+          "exp": 1775095008
+        }
+      }
+    },
+    {
+      "name": "Teacher Profile Auth Check",
+      "method": "GET",
+      "url": "http://localhost:4000/auth/profile",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Protected profile data",
+        "user": {
+          "userId": "5",
+          "username": "teacher2",
+          "role": "teacher",
+          "iat": 1775008608,
+          "exp": 1775095008
+        }
+      }
+    },
+    {
+      "name": "Auth Users After Register",
+      "method": "GET",
+      "url": "http://localhost:4000/auth/users",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "count": 5,
+        "data": [
+          {
+            "userId": "1",
+            "username": "student1",
+            "role": "student"
+          },
+          {
+            "userId": "2",
+            "username": "teacher1",
+            "role": "teacher"
+          },
+          {
+            "userId": "3",
+            "username": "admin1",
+            "role": "admin"
+          },
+          {
+            "userId": "4",
+            "username": "student2",
+            "role": "student"
+          },
+          {
+            "userId": "5",
+            "username": "teacher2",
+            "role": "teacher"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Create Teacher Profile",
+      "method": "POST",
+      "url": "http://localhost:4000/teachers/profile",
+      "status_code": 201,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": {
+          "fullName": "Teacher Two",
+          "email": "teacher2@example.com",
+          "faculty": "Information Technology"
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Teacher profile created successfully",
+        "data": {
+          "_id": "0000000000000000000003e8",
+          "userId": "5",
+          "username": "teacher2",
+          "fullName": "Teacher Two",
+          "email": "teacher2@example.com",
+          "faculty": "Information Technology",
+          "createdAt": "2026-04-01T01:56:48.134Z",
+          "updatedAt": "2026-04-01T01:56:48.135Z"
+        }
+      }
+    },
+    {
+      "name": "Get Teacher Profile",
+      "method": "GET",
+      "url": "http://localhost:4000/teachers/me",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Teacher profile retrieved successfully",
+        "data": {
+          "_id": "0000000000000000000003e8",
+          "userId": "5",
+          "username": "teacher2",
+          "fullName": "Teacher Two",
+          "email": "teacher2@example.com",
+          "faculty": "Information Technology",
+          "createdAt": "2026-04-01T01:56:48.134Z",
+          "updatedAt": "2026-04-01T01:56:48.135Z"
+        }
+      }
+    },
+    {
+      "name": "Update Teacher Profile",
+      "method": "PUT",
+      "url": "http://localhost:4000/teachers/me",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": {
+          "fullName": "Teacher Two Updated",
+          "faculty": "Engineering"
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Teacher profile updated successfully",
+        "data": {
+          "_id": "0000000000000000000003e8",
+          "userId": "5",
+          "username": "teacher2",
+          "fullName": "Teacher Two Updated",
+          "email": "teacher2@example.com",
+          "faculty": "Engineering",
+          "createdAt": "2026-04-01T01:56:48.134Z",
+          "updatedAt": "2026-04-01T01:56:48.155Z"
+        }
+      }
+    },
+    {
+      "name": "Get Teacher Profile After Update",
+      "method": "GET",
+      "url": "http://localhost:4000/teachers/me",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Teacher profile retrieved successfully",
+        "data": {
+          "_id": "0000000000000000000003e8",
+          "userId": "5",
+          "username": "teacher2",
+          "fullName": "Teacher Two Updated",
+          "email": "teacher2@example.com",
+          "faculty": "Engineering",
+          "createdAt": "2026-04-01T01:56:48.134Z",
+          "updatedAt": "2026-04-01T01:56:48.155Z"
+        }
+      }
+    },
+    {
+      "name": "Create Student Profile",
+      "method": "POST",
+      "url": "http://localhost:4000/students/profile",
+      "status_code": 201,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": {
+          "fullName": "Student Two",
+          "email": "student2@example.com",
+          "department": "IT",
+          "yearLevel": "Year 4"
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Student profile created successfully",
+        "data": {
+          "_id": "000000000000000000000001",
+          "userId": "4",
+          "username": "student2",
+          "fullName": "Student Two",
+          "email": "student2@example.com",
+          "department": "IT",
+          "yearLevel": "Year 4",
+          "createdAt": "2026-04-01T01:56:48.196Z",
+          "updatedAt": "2026-04-01T01:56:48.196Z"
+        }
+      }
+    },
+    {
+      "name": "Get Student Profile",
+      "method": "GET",
+      "url": "http://localhost:4000/students/me",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Student profile fetched successfully",
+        "data": {
+          "_id": "000000000000000000000001",
+          "userId": "4",
+          "username": "student2",
+          "fullName": "Student Two",
+          "email": "student2@example.com",
+          "department": "IT",
+          "yearLevel": "Year 4",
+          "createdAt": "2026-04-01T01:56:48.196Z",
+          "updatedAt": "2026-04-01T01:56:48.196Z"
+        }
+      }
+    },
+    {
+      "name": "Update Student Profile",
+      "method": "PUT",
+      "url": "http://localhost:4000/students/me",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": {
+          "department": "Computer Science",
+          "yearLevel": "Year 4"
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Student profile updated successfully",
+        "data": {
+          "_id": "000000000000000000000001",
+          "userId": "4",
+          "username": "student2",
+          "fullName": "Student Two",
+          "email": "student2@example.com",
+          "department": "Computer Science",
+          "yearLevel": "Year 4",
+          "createdAt": "2026-04-01T01:56:48.196Z",
+          "updatedAt": "2026-04-01T01:56:48.219Z"
+        }
+      }
+    },
+    {
+      "name": "Get Student Profile After Update",
+      "method": "GET",
+      "url": "http://localhost:4000/students/me",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Student profile fetched successfully",
+        "data": {
+          "_id": "000000000000000000000001",
+          "userId": "4",
+          "username": "student2",
+          "fullName": "Student Two",
+          "email": "student2@example.com",
+          "department": "Computer Science",
+          "yearLevel": "Year 4",
+          "createdAt": "2026-04-01T01:56:48.196Z",
+          "updatedAt": "2026-04-01T01:56:48.219Z"
+        }
+      }
+    },
+    {
+      "name": "Teacher Search Students",
+      "method": "GET",
+      "url": "http://localhost:4000/teachers/students/search",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": null,
+        "params": {
+          "q": "Student"
+        }
+      },
+      "response": {
+        "success": true,
+        "message": "Students search results",
+        "data": [
+          {
+            "_id": "000000000000000000000001",
+            "userId": "4",
+            "username": "student2",
+            "fullName": "Student Two",
+            "email": "student2@example.com",
+            "department": "Computer Science",
+            "yearLevel": "Year 4",
+            "createdAt": "2026-04-01T01:56:48.196Z",
+            "updatedAt": "2026-04-01T01:56:48.219Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Teacher Get Student By ID",
+      "method": "GET",
+      "url": "http://localhost:4000/teachers/students/000000000000000000000001",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Student profile fetched successfully",
+        "data": {
+          "_id": "000000000000000000000001",
+          "userId": "4",
+          "username": "student2",
+          "fullName": "Student Two",
+          "email": "student2@example.com",
+          "department": "Computer Science",
+          "yearLevel": "Year 4",
+          "createdAt": "2026-04-01T01:56:48.196Z",
+          "updatedAt": "2026-04-01T01:56:48.219Z"
+        }
+      }
+    },
+    {
+      "name": "Direct Student Search Public",
+      "method": "GET",
+      "url": "http://localhost:4000/students/search",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": {
+          "q": "Computer"
+        }
+      },
+      "response": {
+        "success": true,
+        "message": "Students found",
+        "data": [
+          {
+            "_id": "000000000000000000000001",
+            "userId": "4",
+            "username": "student2",
+            "fullName": "Student Two",
+            "email": "student2@example.com",
+            "department": "Computer Science",
+            "yearLevel": "Year 4",
+            "createdAt": "2026-04-01T01:56:48.196Z",
+            "updatedAt": "2026-04-01T01:56:48.219Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Create Assignment",
+      "method": "POST",
+      "url": "http://localhost:4000/teachers/assignments",
+      "status_code": 201,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": {
+          "title": "Microservices Homework",
+          "description": "Build and test the full microservices workflow",
+          "subject": "Distributed Systems",
+          "dueDate": "2026-04-10T12:00:00.000Z"
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Assignment created successfully",
+        "data": {
+          "_id": "0000000000000000000003e9",
+          "teacherId": "0000000000000000000003e8",
+          "teacherUserId": "5",
+          "title": "Microservices Homework",
+          "description": "Build and test the full microservices workflow",
+          "subject": "Distributed Systems",
+          "dueDate": "2026-04-10T12:00:00.000Z",
+          "isActive": true,
+          "createdAt": "2026-04-01T01:56:48.295Z",
+          "updatedAt": "2026-04-01T01:56:48.295Z"
+        }
+      }
+    },
+    {
+      "name": "List Teacher Assignments",
+      "method": "GET",
+      "url": "http://localhost:4000/teachers/assignments",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Assignments retrieved successfully",
+        "count": 1,
+        "data": [
+          {
+            "_id": "0000000000000000000003e9",
+            "teacherId": "0000000000000000000003e8",
+            "teacherUserId": "5",
+            "title": "Microservices Homework",
+            "description": "Build and test the full microservices workflow",
+            "subject": "Distributed Systems",
+            "dueDate": "2026-04-10T12:00:00.000Z",
+            "isActive": true,
+            "createdAt": "2026-04-01T01:56:48.295Z",
+            "updatedAt": "2026-04-01T01:56:48.295Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Get Assignment By ID",
+      "method": "GET",
+      "url": "http://localhost:4000/teachers/assignments/0000000000000000000003e9",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Assignment retrieved successfully",
+        "data": {
+          "_id": "0000000000000000000003e9",
+          "teacherId": "0000000000000000000003e8",
+          "teacherUserId": "5",
+          "title": "Microservices Homework",
+          "description": "Build and test the full microservices workflow",
+          "subject": "Distributed Systems",
+          "dueDate": "2026-04-10T12:00:00.000Z",
+          "isActive": true,
+          "createdAt": "2026-04-01T01:56:48.295Z",
+          "updatedAt": "2026-04-01T01:56:48.295Z"
+        }
+      }
+    },
+    {
+      "name": "Update Assignment",
+      "method": "PUT",
+      "url": "http://localhost:4000/teachers/assignments/0000000000000000000003e9",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": {
+          "title": "Microservices Homework Final",
+          "subject": "Software Architecture"
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Assignment updated successfully",
+        "data": {
+          "_id": "0000000000000000000003e9",
+          "teacherId": "0000000000000000000003e8",
+          "teacherUserId": "5",
+          "title": "Microservices Homework Final",
+          "description": "Build and test the full microservices workflow",
+          "subject": "Software Architecture",
+          "dueDate": "2026-04-10T12:00:00.000Z",
+          "isActive": true,
+          "createdAt": "2026-04-01T01:56:48.295Z",
+          "updatedAt": "2026-04-01T01:56:48.319Z"
+        }
+      }
+    },
+    {
+      "name": "List Public Assignments",
+      "method": "GET",
+      "url": "http://localhost:4000/teachers/assignments/public",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Public assignments retrieved successfully",
+        "count": 1,
+        "data": [
+          {
+            "_id": "0000000000000000000003e9",
+            "teacherId": "0000000000000000000003e8",
+            "teacherUserId": "5",
+            "title": "Microservices Homework Final",
+            "description": "Build and test the full microservices workflow",
+            "subject": "Software Architecture",
+            "dueDate": "2026-04-10T12:00:00.000Z",
+            "isActive": true,
+            "createdAt": "2026-04-01T01:56:48.295Z",
+            "updatedAt": "2026-04-01T01:56:48.319Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Get Public Assignment By ID",
+      "method": "GET",
+      "url": "http://localhost:4000/teachers/assignments/public/0000000000000000000003e9",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Assignment retrieved successfully",
+        "data": {
+          "_id": "0000000000000000000003e9",
+          "teacherId": "0000000000000000000003e8",
+          "teacherUserId": "5",
+          "title": "Microservices Homework Final",
+          "description": "Build and test the full microservices workflow",
+          "subject": "Software Architecture",
+          "dueDate": "2026-04-10T12:00:00.000Z",
+          "isActive": true,
+          "createdAt": "2026-04-01T01:56:48.295Z",
+          "updatedAt": "2026-04-01T01:56:48.319Z"
+        }
+      }
+    },
+    {
+      "name": "Student List Assignments",
+      "method": "GET",
+      "url": "http://localhost:4000/students/assignments",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Public assignments retrieved successfully",
+        "count": 1,
+        "data": [
+          {
+            "_id": "0000000000000000000003e9",
+            "teacherId": "0000000000000000000003e8",
+            "teacherUserId": "5",
+            "title": "Microservices Homework Final",
+            "description": "Build and test the full microservices workflow",
+            "subject": "Software Architecture",
+            "dueDate": "2026-04-10T12:00:00.000Z",
+            "isActive": true,
+            "createdAt": "2026-04-01T01:56:48.295Z",
+            "updatedAt": "2026-04-01T01:56:48.319Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Student Get Assignment By ID",
+      "method": "GET",
+      "url": "http://localhost:4000/students/assignments/0000000000000000000003e9",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Assignment retrieved successfully",
+        "data": {
+          "_id": "0000000000000000000003e9",
+          "teacherId": "0000000000000000000003e8",
+          "teacherUserId": "5",
+          "title": "Microservices Homework Final",
+          "description": "Build and test the full microservices workflow",
+          "subject": "Software Architecture",
+          "dueDate": "2026-04-10T12:00:00.000Z",
+          "isActive": true,
+          "createdAt": "2026-04-01T01:56:48.295Z",
+          "updatedAt": "2026-04-01T01:56:48.319Z"
+        }
+      }
+    },
+    {
+      "name": "Submit Assignment",
+      "method": "POST",
+      "url": "http://localhost:4000/students/assignments/submit",
+      "status_code": 201,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": {
+          "assignmentId": "0000000000000000000003e9",
+          "title": "My Submission",
+          "content": "Implemented API gateway, auth, teacher, and student services."
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Assignment submitted successfully",
+        "data": {
+          "_id": "000000000000000000000002",
+          "studentId": "000000000000000000000001",
+          "studentUserId": "4",
+          "assignmentId": "0000000000000000000003e9",
+          "title": "My Submission",
+          "content": "Implemented API gateway, auth, teacher, and student services.",
+          "status": "submitted",
+          "score": null,
+          "feedback": null,
+          "submittedAt": "2026-04-01T01:56:48.384Z",
+          "createdAt": "2026-04-01T01:56:48.384Z",
+          "updatedAt": "2026-04-01T01:56:48.384Z"
+        }
+      }
+    },
+    {
+      "name": "List My Submissions",
+      "method": "GET",
+      "url": "http://localhost:4000/students/assignments/my-submissions",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Submissions retrieved successfully",
+        "data": [
+          {
+            "_id": "000000000000000000000002",
+            "studentId": "000000000000000000000001",
+            "studentUserId": "4",
+            "assignmentId": "0000000000000000000003e9",
+            "title": "My Submission",
+            "content": "Implemented API gateway, auth, teacher, and student services.",
+            "status": "submitted",
+            "score": null,
+            "feedback": null,
+            "submittedAt": "2026-04-01T01:56:48.384Z",
+            "createdAt": "2026-04-01T01:56:48.384Z",
+            "updatedAt": "2026-04-01T01:56:48.384Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Get Submission By ID",
+      "method": "GET",
+      "url": "http://localhost:4000/students/assignments/submission/000000000000000000000002",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Submission retrieved successfully",
+        "data": {
+          "_id": "000000000000000000000002",
+          "studentId": "000000000000000000000001",
+          "studentUserId": "4",
+          "assignmentId": "0000000000000000000003e9",
+          "title": "My Submission",
+          "content": "Implemented API gateway, auth, teacher, and student services.",
+          "status": "submitted",
+          "score": null,
+          "feedback": null,
+          "submittedAt": "2026-04-01T01:56:48.384Z",
+          "createdAt": "2026-04-01T01:56:48.384Z",
+          "updatedAt": "2026-04-01T01:56:48.384Z"
+        }
+      }
+    },
+    {
+      "name": "Update Submission",
+      "method": "PUT",
+      "url": "http://localhost:4000/students/assignments/submission/000000000000000000000002",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": {
+          "content": "Updated content before teacher review."
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Submission updated successfully",
+        "data": {
+          "_id": "000000000000000000000002",
+          "studentId": "000000000000000000000001",
+          "studentUserId": "4",
+          "assignmentId": "0000000000000000000003e9",
+          "title": "My Submission",
+          "content": "Updated content before teacher review.",
+          "status": "submitted",
+          "score": null,
+          "feedback": null,
+          "submittedAt": "2026-04-01T01:56:48.384Z",
+          "createdAt": "2026-04-01T01:56:48.384Z",
+          "updatedAt": "2026-04-01T01:56:48.403Z"
+        }
+      }
+    },
+    {
+      "name": "Internal Get Submission",
+      "method": "GET",
+      "url": "http://localhost:4000/students/internal/000000000000000000000002",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Submission retrieved successfully",
+        "data": {
+          "_id": "000000000000000000000002",
+          "studentId": "000000000000000000000001",
+          "studentUserId": "4",
+          "assignmentId": "0000000000000000000003e9",
+          "title": "My Submission",
+          "content": "Updated content before teacher review.",
+          "status": "submitted",
+          "score": null,
+          "feedback": null,
+          "submittedAt": "2026-04-01T01:56:48.384Z",
+          "createdAt": "2026-04-01T01:56:48.384Z",
+          "updatedAt": "2026-04-01T01:56:48.403Z"
+        }
+      }
+    },
+    {
+      "name": "Teacher Review Submission",
+      "method": "PUT",
+      "url": "http://localhost:4000/teachers/submissions/000000000000000000000002/review",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": {
+          "score": 95,
+          "feedback": "Good structure and successful API integration."
+        },
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Submission reviewed successfully",
+        "data": {
+          "_id": "000000000000000000000002",
+          "studentId": "000000000000000000000001",
+          "studentUserId": "4",
+          "assignmentId": "0000000000000000000003e9",
+          "title": "My Submission",
+          "content": "Updated content before teacher review.",
+          "status": "reviewed",
+          "score": 95,
+          "feedback": "Good structure and successful API integration.",
+          "submittedAt": "2026-04-01T01:56:48.384Z",
+          "createdAt": "2026-04-01T01:56:48.384Z",
+          "updatedAt": "2026-04-01T01:56:48.422Z"
+        }
+      }
+    },
+    {
+      "name": "Get Submission After Review",
+      "method": "GET",
+      "url": "http://localhost:4000/students/assignments/submission/000000000000000000000002",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0IiwidXNlcm5hbWUiOiJzdHVkZW50MiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.cNIiXEiuAIOp7eeN1gSvigXCAszziQdWHIaFqEv5uLI"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Submission retrieved successfully",
+        "data": {
+          "_id": "000000000000000000000002",
+          "studentId": "000000000000000000000001",
+          "studentUserId": "4",
+          "assignmentId": "0000000000000000000003e9",
+          "title": "My Submission",
+          "content": "Updated content before teacher review.",
+          "status": "reviewed",
+          "score": 95,
+          "feedback": "Good structure and successful API integration.",
+          "submittedAt": "2026-04-01T01:56:48.384Z",
+          "createdAt": "2026-04-01T01:56:48.384Z",
+          "updatedAt": "2026-04-01T01:56:48.422Z"
+        }
+      }
+    },
+    {
+      "name": "Internal Get Submission After Review",
+      "method": "GET",
+      "url": "http://localhost:4000/students/internal/000000000000000000000002",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Submission retrieved successfully",
+        "data": {
+          "_id": "000000000000000000000002",
+          "studentId": "000000000000000000000001",
+          "studentUserId": "4",
+          "assignmentId": "0000000000000000000003e9",
+          "title": "My Submission",
+          "content": "Updated content before teacher review.",
+          "status": "reviewed",
+          "score": 95,
+          "feedback": "Good structure and successful API integration.",
+          "submittedAt": "2026-04-01T01:56:48.384Z",
+          "createdAt": "2026-04-01T01:56:48.384Z",
+          "updatedAt": "2026-04-01T01:56:48.422Z"
+        }
+      }
+    },
+    {
+      "name": "Delete Assignment",
+      "method": "DELETE",
+      "url": "http://localhost:4000/teachers/assignments/0000000000000000000003e9",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Assignment deleted successfully (soft delete)",
+        "data": {
+          "_id": "0000000000000000000003e9",
+          "teacherId": "0000000000000000000003e8",
+          "teacherUserId": "5",
+          "title": "Microservices Homework Final",
+          "description": "Build and test the full microservices workflow",
+          "subject": "Software Architecture",
+          "dueDate": "2026-04-10T12:00:00.000Z",
+          "isActive": false,
+          "createdAt": "2026-04-01T01:56:48.295Z",
+          "updatedAt": "2026-04-01T01:56:48.441Z"
+        }
+      }
+    },
+    {
+      "name": "List Teacher Assignments After Delete",
+      "method": "GET",
+      "url": "http://localhost:4000/teachers/assignments",
+      "status_code": 200,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1IiwidXNlcm5hbWUiOiJ0ZWFjaGVyMiIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzc1MDA4NjA4LCJleHAiOjE3NzUwOTUwMDh9.FNr_OHmwCSsrVq_hRnWdj7_8vU2kB6ZU3iH5txumycM"
+        },
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Assignments retrieved successfully",
+        "count": 1,
+        "data": [
+          {
+            "_id": "0000000000000000000003e9",
+            "teacherId": "0000000000000000000003e8",
+            "teacherUserId": "5",
+            "title": "Microservices Homework Final",
+            "description": "Build and test the full microservices workflow",
+            "subject": "Software Architecture",
+            "dueDate": "2026-04-10T12:00:00.000Z",
+            "isActive": false,
+            "createdAt": "2026-04-01T01:56:48.295Z",
+            "updatedAt": "2026-04-01T01:56:48.441Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "List Public Assignments After Delete",
+      "method": "GET",
+      "url": "http://localhost:4000/teachers/assignments/public",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Public assignments retrieved successfully",
+        "count": 0,
+        "data": []
+      }
+    },
+    {
+      "name": "Student Health Direct",
+      "method": "GET",
+      "url": "http://localhost:5001/health",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Student Microservice is running"
+      }
+    },
+    {
+      "name": "Teacher Health Direct",
+      "method": "GET",
+      "url": "http://localhost:5002/health",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Teacher Microservice is running"
+      }
+    },
+    {
+      "name": "Auth Root Direct",
+      "method": "GET",
+      "url": "http://localhost:5003/",
+      "status_code": 200,
+      "request": {
+        "headers": {},
+        "json": null,
+        "params": null
+      },
+      "response": {
+        "success": true,
+        "message": "Authentication Service is running"
+      }
+    }
+  ]
+}

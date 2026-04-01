@@ -1,0 +1,597 @@
+{
+  "info": {
+    "name": "University Microservices API",
+    "description": "Complete test collection for Node.js microservices: API Gateway, Auth, Student, and Teacher services",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "2. Seed Users",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/seed",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "seed"]
+        }
+      }
+    },
+    {
+      "name": "3. Register New User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"123456\",\n  \"role\": \"student\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/register",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "register"]
+        }
+      }
+    },
+    {
+      "name": "4. Login as Teacher",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (jsonData.success && jsonData.data && jsonData.data.token) {",
+              "  pm.collectionVariables.set(\"teacher_token\", jsonData.data.token);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"teacher1\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "5. Login as Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (jsonData.success && jsonData.data && jsonData.data.token) {",
+              "  pm.collectionVariables.set(\"student_token\", jsonData.data.token);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"student1\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "6. Get All Users",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{teacher_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/auth/users",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "users"]
+        }
+      }
+    },
+    {
+      "name": "7. Get Auth Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{teacher_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/auth/profile",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "profile"]
+        }
+      }
+    },
+    {
+      "name": "8. Create Teacher Profile",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{teacher_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"John Teacher\",\n  \"email\": \"teacher1@university.edu\",\n  \"faculty\": \"Computer Science\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/teacher/profile",
+          "host": ["{{base_url}}"],
+          "path": ["teacher", "profile"]
+        }
+      }
+    },
+    {
+      "name": "9. Get Teacher Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{teacher_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/teacher/me",
+          "host": ["{{base_url}}"],
+          "path": ["teacher", "me"]
+        }
+      }
+    },
+    {
+      "name": "10. Update Teacher Profile",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{teacher_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"John T. Smith\",\n  \"faculty\": \"Information Technology\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/teacher/me",
+          "host": ["{{base_url}}"],
+          "path": ["teacher", "me"]
+        }
+      }
+    },
+    {
+      "name": "11. Create Student Profile",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{student_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Jane Student\",\n  \"email\": \"student1@university.edu\",\n  \"department\": \"Computer Science\",\n  \"yearLevel\": 3\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/student/profile",
+          "host": ["{{base_url}}"],
+          "path": ["student", "profile"]
+        }
+      }
+    },
+    {
+      "name": "12. Get Student Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{student_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/student/me",
+          "host": ["{{base_url}}"],
+          "path": ["student", "me"]
+        }
+      }
+    },
+    {
+      "name": "13. Update Student Profile",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{student_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Jane S. Doe\",\n  \"yearLevel\": 4\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/student/me",
+          "host": ["{{base_url}}"],
+          "path": ["student", "me"]
+        }
+      }
+    },
+    {
+      "name": "14. Create Assignment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (jsonData.success && jsonData.data && jsonData.data._id) {",
+              "  pm.collectionVariables.set(\"assignment_id\", jsonData.data._id);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{teacher_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Database Design Project\",\n  \"description\": \"Design a normalized database schema for an e-commerce platform\",\n  \"subject\": \"Database Systems\",\n  \"dueDate\": \"2026-05-15\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/teacher/assignments",
+          "host": ["{{base_url}}"],
+          "path": ["teacher", "assignments"]
+        }
+      }
+    },
+    {
+      "name": "15. List Assignments",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{teacher_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/teacher/assignments",
+          "host": ["{{base_url}}"],
+          "path": ["teacher", "assignments"]
+        }
+      }
+    },
+    {
+      "name": "16. Get Assignment by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{teacher_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/teacher/assignments/{{assignment_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["teacher", "assignments", "{{assignment_id}}"]
+        }
+      }
+    },
+    {
+      "name": "17. Submit Assignment (Student)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (jsonData.success && jsonData.data && jsonData.data._id) {",
+              "  pm.collectionVariables.set(\"submission_id\", jsonData.data._id);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{student_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"assignmentId\": \"{{assignment_id}}\",\n  \"title\": \"My Database Design\",\n  \"content\": \"Here is my normalized database schema with ER diagrams and SQL statements...\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/student/assignments/submit",
+          "host": ["{{base_url}}"],
+          "path": ["student", "assignments", "submit"]
+        }
+      }
+    },
+    {
+      "name": "18. My Submissions",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{student_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/student/assignments/my-submissions",
+          "host": ["{{base_url}}"],
+          "path": ["student", "assignments", "my-submissions"]
+        }
+      }
+    },
+    {
+      "name": "19. Get Submission by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{student_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/student/assignments/submission/{{submission_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["student", "assignments", "submission", "{{submission_id}}"]
+        }
+      }
+    },
+    {
+      "name": "20. Review Submission (Teacher)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{teacher_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"score\": 85,\n  \"feedback\": \"Excellent schema design. Good normalization up to 3NF. Consider adding indexes for frequently queried columns.\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/teacher/submissions/{{submission_id}}/review",
+          "host": ["{{base_url}}"],
+          "path": ["teacher", "submissions", "{{submission_id}}", "review"]
+        }
+      }
+    },
+    {
+      "name": "21. View Reviewed Submission (Student)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{student_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/student/assignments/submission/{{submission_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["student", "assignments", "submission", "{{submission_id}}"]
+        }
+      }
+    },
+    {
+      "name": "22. Search Students (Teacher)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{teacher_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/teacher/students/search?q=Jane",
+          "host": ["{{base_url}}"],
+          "path": ["teacher", "students", "search"],
+          "query": [
+            {
+              "key": "q",
+              "value": "Jane"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "23. Forbidden: Student Access Teacher Route",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{student_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Hack\",\n  \"description\": \"Should fail\",\n  \"subject\": \"None\",\n  \"dueDate\": \"2026-06-01\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/teacher/assignments",
+          "host": ["{{base_url}}"],
+          "path": ["teacher", "assignments"]
+        }
+      }
+    },
+    {
+      "name": "24. Forbidden: Teacher Access Student Route",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{teacher_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Hack\",\n  \"email\": \"hack@test.com\",\n  \"department\": \"None\",\n  \"yearLevel\": 1\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/student/profile",
+          "host": ["{{base_url}}"],
+          "path": ["student", "profile"]
+        }
+      }
+    },
+    {
+      "name": "25. Forbidden: No Token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/teacher/me",
+          "host": ["{{base_url}}"],
+          "path": ["teacher", "me"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:4000",
+      "type": "string"
+    },
+    {
+      "key": "teacher_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "student_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "assignment_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "submission_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
