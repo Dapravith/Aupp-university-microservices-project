@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUPP University - Microservices Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>AUPP<span> University</span></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Microservices Platform</h2>
+            <p>A modern, scalable university management system built with microservices architecture. Managing students, teachers, assignments, and authentication seamlessly.</p>
+            <a href="#services" class="btn">Explore Services</a>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <h2 class="section-title">Our Microservices</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">&#128274;</div>
+                <h3>Authentication Service</h3>
+                <p>Secure JWT-based authentication and authorization. Handles user registration, login, and token management for all platform users.</p>
+                <span class="tech-badge">Port 3001</span>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">&#127891;</div>
+                <h3>Student Service</h3>
+                <p>Complete student management including profiles, enrollment, and assignment submissions. Students can view and submit their coursework.</p>
+                <span class="tech-badge">Port 3003</span>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">&#128218;</div>
+                <h3>Teacher Service</h3>
+                <p>Teacher management with assignment creation, grading, and review capabilities. Teachers can manage courses and evaluate submissions.</p>
+                <span class="tech-badge">Port 3002</span>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">&#128640;</div>
+                <h3>API Gateway</h3>
+                <p>Central entry point that routes requests to appropriate microservices. Handles load balancing, rate limiting, and request forwarding.</p>
+                <span class="tech-badge">Port 3000</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="architecture">
+        <h2 class="section-title">System Architecture</h2>
+        <div class="arch-container">
+            <div class="arch-diagram">
+                <div class="arch-layer">
+                    <h3>Client Layer</h3>
+                    <div class="arch-boxes">
+                        <div class="arch-box client">Web Browser</div>
+                        <div class="arch-box client">Postman</div>
+                        <div class="arch-box client">Mobile App</div>
+                    </div>
+                </div>
+                <div class="arch-arrow">&#8595;</div>
+                <div class="arch-layer">
+                    <h3>Gateway Layer</h3>
+                    <div class="arch-boxes">
+                        <div class="arch-box gateway">API Gateway (Port 3000)</div>
+                    </div>
+                </div>
+                <div class="arch-arrow">&#8595;</div>
+                <div class="arch-layer">
+                    <h3>Service Layer</h3>
+                    <div class="arch-boxes">
+                        <div class="arch-box service">Auth Service</div>
+                        <div class="arch-box service">Student Service</div>
+                        <div class="arch-box service">Teacher Service</div>
+                    </div>
+                </div>
+                <div class="arch-arrow">&#8595;</div>
+                <div class="arch-layer">
+                    <h3>Data Layer</h3>
+                    <div class="arch-boxes">
+                        <div class="arch-box database">MongoDB</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tech" class="tech-stack">
+        <h2 class="section-title">Technology Stack</h2>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <h4>Node.js</h4>
+                <p>Runtime Environment</p>
+            </div>
+            <div class="tech-item">
+                <h4>Express.js</h4>
+                <p>Web Framework</p>
+            </div>
+            <div class="tech-item">
+                <h4>MongoDB</h4>
+                <p>NoSQL Database</p>
+            </div>
+            <div class="tech-item">
+                <h4>JWT</h4>
+                <p>Authentication</p>
+            </div>
+            <div class="tech-item">
+                <h4>Docker</h4>
+                <p>Containerization</p>
+            </div>
+            <div class="tech-item">
+                <h4>Nginx</h4>
+                <p>Web Server</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="team" class="team">
+        <h2 class="section-title">Project Info</h2>
+        <div class="team-container">
+            <div class="team-card">
+                <div class="team-icon">&#128187;</div>
+                <h3>AUPP University</h3>
+                <p>Microservices Architecture Project</p>
+                <p class="team-detail">Built as part of the university curriculum to demonstrate modern software architecture, containerization, and cloud deployment practices.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2 class="section-title">API Endpoints</h2>
+        <div class="endpoints-grid">
+            <div class="endpoint-card">
+                <h4>Authentication</h4>
+                <ul>
+                    <li><span class="method post">POST</span> /api/auth/register</li>
+                    <li><span class="method post">POST</span> /api/auth/login</li>
+                </ul>
+            </div>
+            <div class="endpoint-card">
+                <h4>Students</h4>
+                <ul>
+                    <li><span class="method get">GET</span> /api/students</li>
+                    <li><span class="method get">GET</span> /api/students/:id</li>
+                    <li><span class="method post">POST</span> /api/submissions</li>
+                </ul>
+            </div>
+            <div class="endpoint-card">
+                <h4>Teachers</h4>
+                <ul>
+                    <li><span class="method get">GET</span> /api/teachers</li>
+                    <li><span class="method post">POST</span> /api/assignments</li>
+                    <li><span class="method post">POST</span> /api/reviews</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 AUPP University - Microservices Platform. All rights reserved.</p>
+            <p>Containerized with Docker | Served by Nginx</p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
