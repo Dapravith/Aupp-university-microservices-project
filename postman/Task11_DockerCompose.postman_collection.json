@@ -1,0 +1,969 @@
+{
+  "info": {
+    "name": "Task 11 - Docker Compose Microservices",
+    "description": "Complete API test collection for Student and Teacher microservices running via Docker Compose.\n\nPorts:\n- Student Service: http://localhost:5001\n- Teacher Service: http://localhost:5002\n\nRun order: Execute requests from top to bottom for a full workflow test.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "STUDENT_URL",
+      "value": "http://localhost:5001"
+    },
+    {
+      "key": "TEACHER_URL",
+      "value": "http://localhost:5002"
+    },
+    {
+      "key": "JWT_SECRET",
+      "value": "task07_super_secret_key"
+    },
+    {
+      "key": "STUDENT_TOKEN",
+      "value": ""
+    },
+    {
+      "key": "TEACHER_TOKEN",
+      "value": ""
+    },
+    {
+      "key": "ASSIGNMENT_ID",
+      "value": ""
+    },
+    {
+      "key": "SUBMISSION_ID",
+      "value": ""
+    },
+    {
+      "key": "STUDENT_ID",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Health Checks",
+      "item": [
+        {
+          "name": "Student Service Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{STUDENT_URL}}/health",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["health"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Student service is running', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.message).to.include('Student');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Teacher Service Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{TEACHER_URL}}/health",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["health"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Teacher service is running', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.message).to.include('Teacher');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "1. Generate JWT Tokens",
+      "item": [
+        {
+          "name": "Generate Student Token",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).replace(/=/g, '');",
+                  "const payload = btoa(JSON.stringify({",
+                  "    userId: 'student001',",
+                  "    username: 'john_student',",
+                  "    role: 'student',",
+                  "    iat: Math.floor(Date.now() / 1000),",
+                  "    exp: Math.floor(Date.now() / 1000) + 86400",
+                  "})).replace(/=/g, '');",
+                  "",
+                  "// Use CryptoJS from Postman sandbox",
+                  "const CryptoJS = require('crypto-js');",
+                  "const signature = CryptoJS.HmacSHA256(",
+                  "    header + '.' + payload,",
+                  "    pm.collectionVariables.get('JWT_SECRET')",
+                  ").toString(CryptoJS.enc.Base64).replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=/g, '');",
+                  "",
+                  "const token = header + '.' + payload + '.' + signature;",
+                  "pm.collectionVariables.set('STUDENT_TOKEN', token);",
+                  "console.log('Student Token generated');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Student token was generated', function () {",
+                  "    const token = pm.collectionVariables.get('STUDENT_TOKEN');",
+                  "    pm.expect(token).to.be.a('string');",
+                  "    pm.expect(token.split('.')).to.have.lengthOf(3);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{STUDENT_URL}}/health",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["health"]
+            },
+            "description": "This request generates a student JWT token in the pre-request script. The actual GET /health call is just a placeholder."
+          }
+        },
+        {
+          "name": "Generate Teacher Token",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).replace(/=/g, '');",
+                  "const payload = btoa(JSON.stringify({",
+                  "    userId: 'teacher001',",
+                  "    username: 'prof_smith',",
+                  "    role: 'teacher',",
+                  "    iat: Math.floor(Date.now() / 1000),",
+                  "    exp: Math.floor(Date.now() / 1000) + 86400",
+                  "})).replace(/=/g, '');",
+                  "",
+                  "const CryptoJS = require('crypto-js');",
+                  "const signature = CryptoJS.HmacSHA256(",
+                  "    header + '.' + payload,",
+                  "    pm.collectionVariables.get('JWT_SECRET')",
+                  ").toString(CryptoJS.enc.Base64).replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=/g, '');",
+                  "",
+                  "const token = header + '.' + payload + '.' + signature;",
+                  "pm.collectionVariables.set('TEACHER_TOKEN', token);",
+                  "console.log('Teacher Token generated');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Teacher token was generated', function () {",
+                  "    const token = pm.collectionVariables.get('TEACHER_TOKEN');",
+                  "    pm.expect(token).to.be.a('string');",
+                  "    pm.expect(token.split('.')).to.have.lengthOf(3);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{TEACHER_URL}}/health",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["health"]
+            },
+            "description": "This request generates a teacher JWT token in the pre-request script. The actual GET /health call is just a placeholder."
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Student Service - Profile",
+      "item": [
+        {
+          "name": "Create Student Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Student profile created - 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.fullName).to.eql('John Doe');",
+                  "    pm.expect(json.data.department).to.eql('Computer Science');",
+                  "    pm.collectionVariables.set('STUDENT_ID', json.data._id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{STUDENT_TOKEN}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"John Doe\",\n  \"email\": \"john.doe@aupp.edu.kh\",\n  \"department\": \"Computer Science\",\n  \"yearLevel\": 3\n}"
+            },
+            "url": {
+              "raw": "{{STUDENT_URL}}/students/profile",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["students", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Get My Student Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Student profile retrieved - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.fullName).to.eql('John Doe');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{STUDENT_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{STUDENT_URL}}/students/me",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["students", "me"]
+            }
+          }
+        },
+        {
+          "name": "Update Student Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Student profile updated - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.yearLevel).to.eql(4);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{STUDENT_TOKEN}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"yearLevel\": 4\n}"
+            },
+            "url": {
+              "raw": "{{STUDENT_URL}}/students/me",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["students", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Teacher Service - Profile",
+      "item": [
+        {
+          "name": "Create Teacher Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Teacher profile created - 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.fullName).to.eql('Prof. Smith');",
+                  "    pm.expect(json.data.faculty).to.eql('Engineering');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TEACHER_TOKEN}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Prof. Smith\",\n  \"email\": \"smith@aupp.edu.kh\",\n  \"faculty\": \"Engineering\"\n}"
+            },
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/profile",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Get My Teacher Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Teacher profile retrieved - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.fullName).to.eql('Prof. Smith');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TEACHER_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/me",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "me"]
+            }
+          }
+        },
+        {
+          "name": "Update Teacher Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Teacher profile updated - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.faculty).to.eql('Computer Science');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TEACHER_TOKEN}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"faculty\": \"Computer Science\"\n}"
+            },
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/me",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Teacher Service - Assignments",
+      "item": [
+        {
+          "name": "Create Assignment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Assignment created - 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.title).to.eql('Docker Compose Lab');",
+                  "    pm.collectionVariables.set('ASSIGNMENT_ID', json.data._id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TEACHER_TOKEN}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Docker Compose Lab\",\n  \"description\": \"Build and deploy microservices using Docker Compose\",\n  \"subject\": \"Cloud Computing\",\n  \"dueDate\": \"2026-05-15T23:59:59.000Z\"\n}"
+            },
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/assignments",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "assignments"]
+            }
+          }
+        },
+        {
+          "name": "Get My Assignments",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Assignments retrieved - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.length).to.be.greaterThan(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TEACHER_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/assignments",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "assignments"]
+            }
+          }
+        },
+        {
+          "name": "Get Assignment by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Assignment retrieved by ID - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.title).to.eql('Docker Compose Lab');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TEACHER_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/assignments/{{ASSIGNMENT_ID}}",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "assignments", "{{ASSIGNMENT_ID}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Public Assignments (No Auth)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Public assignments retrieved - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.length).to.be.greaterThan(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/assignments/public",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "assignments", "public"]
+            }
+          }
+        },
+        {
+          "name": "Update Assignment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Assignment updated - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.description).to.include('updated');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TEACHER_TOKEN}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Build and deploy microservices using Docker Compose - updated with bonus tasks\"\n}"
+            },
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/assignments/{{ASSIGNMENT_ID}}",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "assignments", "{{ASSIGNMENT_ID}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Cross-Service: Student views Assignments",
+      "item": [
+        {
+          "name": "Student - Browse All Assignments (via Teacher Service)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Student can browse assignments from teacher service - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.length).to.be.greaterThan(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{STUDENT_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{STUDENT_URL}}/students/assignments",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["students", "assignments"]
+            }
+          }
+        },
+        {
+          "name": "Student - View Single Assignment (via Teacher Service)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Student can view single assignment - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.title).to.eql('Docker Compose Lab');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{STUDENT_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{STUDENT_URL}}/students/assignments/{{ASSIGNMENT_ID}}",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["students", "assignments", "{{ASSIGNMENT_ID}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Cross-Service: Student submits Assignment",
+      "item": [
+        {
+          "name": "Student - Submit Assignment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Assignment submitted - 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.status).to.eql('submitted');",
+                  "    pm.collectionVariables.set('SUBMISSION_ID', json.data._id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{STUDENT_TOKEN}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assignmentId\": \"{{ASSIGNMENT_ID}}\",\n  \"title\": \"My Docker Compose Solution\",\n  \"content\": \"I created a docker-compose.yml with student and teacher services connected via a bridge network. Both services communicate through internal DNS.\"\n}"
+            },
+            "url": {
+              "raw": "{{STUDENT_URL}}/students/assignments/submit",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["students", "assignments", "submit"]
+            }
+          }
+        },
+        {
+          "name": "Student - Get My Submissions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Submissions retrieved - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.length).to.be.greaterThan(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{STUDENT_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{STUDENT_URL}}/students/assignments/my-submissions",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["students", "assignments", "my-submissions"]
+            }
+          }
+        },
+        {
+          "name": "Student - Get Submission by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Submission retrieved by ID - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data._id).to.eql(pm.collectionVariables.get('SUBMISSION_ID'));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{STUDENT_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{STUDENT_URL}}/students/assignments/submission/{{SUBMISSION_ID}}",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["students", "assignments", "submission", "{{SUBMISSION_ID}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Cross-Service: Teacher reviews Submission",
+      "item": [
+        {
+          "name": "Teacher - Review Student Submission (calls Student Service)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Submission reviewed - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.score).to.eql(95);",
+                  "    pm.expect(json.data.status).to.eql('reviewed');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TEACHER_TOKEN}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"score\": 95,\n  \"feedback\": \"Excellent work! Your Docker Compose setup correctly connects both services with proper networking.\"\n}"
+            },
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/submissions/{{SUBMISSION_ID}}/review",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "submissions", "{{SUBMISSION_ID}}", "review"]
+            }
+          }
+        },
+        {
+          "name": "Student - Verify Submission is Reviewed",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Submission now shows reviewed status - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.status).to.eql('reviewed');",
+                  "    pm.expect(json.data.score).to.eql(95);",
+                  "    pm.expect(json.data.feedback).to.include('Excellent');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{STUDENT_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{STUDENT_URL}}/students/assignments/submission/{{SUBMISSION_ID}}",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["students", "assignments", "submission", "{{SUBMISSION_ID}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Cross-Service: Teacher searches Students",
+      "item": [
+        {
+          "name": "Teacher - Search Students (calls Student Service)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Teacher can search students via cross-service call - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TEACHER_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/students/search?q=John",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "students", "search"],
+              "query": [
+                { "key": "q", "value": "John" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Teacher - Get Student by ID (calls Student Service)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Teacher can view student profile via cross-service call - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.fullName).to.eql('John Doe');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TEACHER_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/students/{{STUDENT_ID}}",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "students", "{{STUDENT_ID}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Search & Public Endpoints",
+      "item": [
+        {
+          "name": "Search Students (No Auth)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Student search works - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{STUDENT_URL}}/students/search?q=John",
+              "host": ["{{STUDENT_URL}}"],
+              "path": ["students", "search"],
+              "query": [
+                { "key": "q", "value": "John" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Public Assignment by ID (No Auth)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Public assignment retrieved - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/assignments/public/{{ASSIGNMENT_ID}}",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "assignments", "public", "{{ASSIGNMENT_ID}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Delete Assignment (Soft Delete)",
+      "item": [
+        {
+          "name": "Teacher - Delete Assignment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Assignment soft deleted - 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.success).to.eql(true);",
+                  "    pm.expect(json.data.isActive).to.eql(false);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TEACHER_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{TEACHER_URL}}/teachers/assignments/{{ASSIGNMENT_ID}}",
+              "host": ["{{TEACHER_URL}}"],
+              "path": ["teachers", "assignments", "{{ASSIGNMENT_ID}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

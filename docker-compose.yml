@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  student-service:
+    build:
+      context: ./Student_Microservice
+      dockerfile: Dockerfile
+    container_name: student-service
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - JWT_SECRET=task07_super_secret_key
+      - TEACHER_SERVICE_URL=http://teacher-service:5002
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+  teacher-service:
+    build:
+      context: ./Teacher_Microservice
+      dockerfile: Dockerfile
+    container_name: teacher-service
+    ports:
+      - "5002:5002"
+    environment:
+      - PORT=5002
+      - JWT_SECRET=task07_super_secret_key
+      - STUDENT_SERVICE_URL=http://student-service:5001
+    networks:
+      - microservices-network
+    depends_on:
+      - student-service
+    restart: unless-stopped
+
+networks:
+  microservices-network:
+    driver: bridge
