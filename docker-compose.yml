@@ -1,8 +1,6 @@
 services:
   student-service:
-    build:
-      context: ./Student_Microservice
-      dockerfile: Dockerfile
+    image: dapravith99/student-microservice:latest
     container_name: student-service
     ports:
       - "5001:5001"
@@ -15,9 +13,7 @@ services:
     restart: unless-stopped
 
   teacher-service:
-    build:
-      context: ./Teacher_Microservice
-      dockerfile: Dockerfile
+    image: dapravith99/teacher-microservice:latest
     container_name: teacher-service
     ports:
       - "5002:5002"
