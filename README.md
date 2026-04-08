@@ -1,2 +1,2 @@
 # Aupp-university-microservices-project
-Aupp University microservices propject
+Aupp University microservices project
