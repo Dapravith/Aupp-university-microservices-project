@@ -3,6 +3,9 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const morgan = require('morgan');
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -10,6 +13,7 @@ const app = express();
 const PORT = process.env.PORT || 5004;
 const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
+const LOG_DIR = process.env.LOG_DIR || path.join(__dirname, 'logs');
 
 if (!MONGO_URI) {
   console.error('MONGO_URI is missing in .env');
@@ -21,8 +25,21 @@ if (!JWT_SECRET) {
   process.exit(1);
 }
 
+// Create logs directory if it doesn't exist
+if (!fs.existsSync(LOG_DIR)) {
+  fs.mkdirSync(LOG_DIR, { recursive: true });
+}
+
+// Write access logs to file (stored in Docker volume)
+const accessLogStream = fs.createWriteStream(
+  path.join(LOG_DIR, 'access.log'),
+  { flags: 'a' }
+);
+
 app.use(cors());
 app.use(express.json());
+app.use(morgan('combined', { stream: accessLogStream })); // File logging
+app.use(morgan('dev')); // Console logging
 
 /**
  * MongoDB Connection

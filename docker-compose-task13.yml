@@ -1,0 +1,56 @@
+##############################################################
+# Task 13 - Docker Compose with Docker Volumes
+#
+# Two containers:
+#   1. auth-service (API) - with volume for server log files
+#   2. mongodb (Database) - with volume for database backup
+#
+# Docker volumes ensure data persists even when containers
+# are destroyed and recreated.
+##############################################################
+
+services:
+  # ── Container 1: API Service with Log Volume ──────────────
+  auth-service:
+    image: dapravith99/auth-service-task13:latest
+    container_name: auth-api
+    ports:
+      - "5004:5004"
+    environment:
+      - PORT=5004
+      - MONGO_URI=mongodb://mongodb:27017/auth_db
+      - JWT_SECRET=task13_super_secret_key
+      - LOG_DIR=/app/logs
+    volumes:
+      - auth-logs:/app/logs          # Volume 3.2: Server log files
+    depends_on:
+      - mongodb
+    networks:
+      - task13-network
+    restart: unless-stopped
+
+  # ── Container 2: MongoDB with Data Volume ─────────────────
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db          # Volume 4.2: Database backup
+    networks:
+      - task13-network
+    restart: unless-stopped
+
+# ── Named Volumes for Data Persistence ──────────────────────
+volumes:
+  auth-logs:
+    driver: local
+    name: task13-auth-logs
+  mongo-data:
+    driver: local
+    name: task13-mongo-data
+
+# ── Network ─────────────────────────────────────────────────
+networks:
+  task13-network:
+    driver: bridge
