@@ -1,0 +1,313 @@
+{
+  "info": {
+    "name": "Task 14 — JWT Auth, Roles, API Gateway",
+    "_postman_id": "7a6f9c4e-14aa-4aa7-8f67-task14collection",
+    "description": "End-to-end tests for Task 14. Set {{gateway}} to your gateway URL (default http://localhost:4000). Run requests top-to-bottom. Logins auto-save their tokens.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "gateway",       "value": "http://localhost:4000" },
+    { "key": "admin_token",   "value": "" },
+    { "key": "student_token", "value": "" },
+    { "key": "teacher_token", "value": "" },
+    { "key": "student_id",    "value": "" },
+    { "key": "teacher_id",    "value": "" }
+  ],
+  "item": [
+    {
+      "name": "0. Gateway health",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{gateway}}/health", "host": ["{{gateway}}"], "path": ["health"] }
+      }
+    },
+    {
+      "name": "1. Seed users",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "{{gateway}}/auth/seed", "host": ["{{gateway}}"], "path": ["auth", "seed"] }
+      }
+    },
+    {
+      "name": "2. Register custom user (optional)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Custom Student\",\n  \"email\": \"custom@uni.edu\",\n  \"password\": \"Password@123\",\n  \"role\": \"student\"\n}" },
+        "url": { "raw": "{{gateway}}/auth/register", "host": ["{{gateway}}"], "path": ["auth", "register"] }
+      }
+    },
+    {
+      "name": "3. Login admin",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "const d = pm.response.json();",
+          "pm.test('login ok', () => pm.expect(pm.response.code).to.eql(200));",
+          "pm.collectionVariables.set('admin_token', d.token);"
+        ]}
+      }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@university.edu\",\n  \"password\": \"Admin@123\"\n}" },
+        "url": { "raw": "{{gateway}}/auth/login", "host": ["{{gateway}}"], "path": ["auth", "login"] }
+      }
+    },
+    {
+      "name": "4. Login student",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "const d = pm.response.json();",
+          "pm.test('login ok', () => pm.expect(pm.response.code).to.eql(200));",
+          "pm.collectionVariables.set('student_token', d.token);"
+        ]}
+      }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"student@university.edu\",\n  \"password\": \"Student@123\"\n}" },
+        "url": { "raw": "{{gateway}}/auth/login", "host": ["{{gateway}}"], "path": ["auth", "login"] }
+      }
+    },
+    {
+      "name": "5. Login teacher",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "const d = pm.response.json();",
+          "pm.test('login ok', () => pm.expect(pm.response.code).to.eql(200));",
+          "pm.collectionVariables.set('teacher_token', d.token);"
+        ]}
+      }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"teacher@university.edu\",\n  \"password\": \"Teacher@123\"\n}" },
+        "url": { "raw": "{{gateway}}/auth/login", "host": ["{{gateway}}"], "path": ["auth", "login"] }
+      }
+    },
+    {
+      "name": "6. Admin creates student (201)",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('201', () => pm.expect(pm.response.code).to.eql(201));",
+          "pm.collectionVariables.set('student_id', pm.response.json().data._id);"
+        ]}
+      }],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{admin_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Alice\",\n  \"studentId\": \"S-001\",\n  \"department\": \"Computer Science\",\n  \"email\": \"alice@uni.edu\"\n}" },
+        "url": { "raw": "{{gateway}}/students", "host": ["{{gateway}}"], "path": ["students"] }
+      }
+    },
+    {
+      "name": "7. Student creates student (201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{student_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Bob\",\n  \"studentId\": \"S-002\",\n  \"department\": \"Mathematics\",\n  \"email\": \"bob@uni.edu\"\n}" },
+        "url": { "raw": "{{gateway}}/students", "host": ["{{gateway}}"], "path": ["students"] }
+      }
+    },
+    {
+      "name": "8. Teacher POST /students — expect 403",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('403', () => pm.expect(pm.response.code).to.eql(403));"
+        ]}
+      }],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{teacher_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Eve\",\n  \"studentId\": \"S-099\",\n  \"department\": \"X\",\n  \"email\": \"eve@uni.edu\"\n}" },
+        "url": { "raw": "{{gateway}}/students", "host": ["{{gateway}}"], "path": ["students"] }
+      }
+    },
+    {
+      "name": "9. Admin lists students (200)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+        "url": { "raw": "{{gateway}}/students", "host": ["{{gateway}}"], "path": ["students"] }
+      }
+    },
+    {
+      "name": "10. Student lists students (200)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{student_token}}" }],
+        "url": { "raw": "{{gateway}}/students", "host": ["{{gateway}}"], "path": ["students"] }
+      }
+    },
+    {
+      "name": "11. Teacher lists students (200)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{teacher_token}}" }],
+        "url": { "raw": "{{gateway}}/students", "host": ["{{gateway}}"], "path": ["students"] }
+      }
+    },
+    {
+      "name": "12. Admin creates teacher (201)",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('201', () => pm.expect(pm.response.code).to.eql(201));",
+          "pm.collectionVariables.set('teacher_id', pm.response.json().data._id);"
+        ]}
+      }],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{admin_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Dr. Smith\",\n  \"teacherId\": \"T-001\",\n  \"subject\": \"Mathematics\",\n  \"email\": \"smith@uni.edu\"\n}" },
+        "url": { "raw": "{{gateway}}/teachers", "host": ["{{gateway}}"], "path": ["teachers"] }
+      }
+    },
+    {
+      "name": "13. Teacher creates teacher (201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{teacher_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Dr. Jones\",\n  \"teacherId\": \"T-002\",\n  \"subject\": \"Physics\",\n  \"email\": \"jones@uni.edu\"\n}" },
+        "url": { "raw": "{{gateway}}/teachers", "host": ["{{gateway}}"], "path": ["teachers"] }
+      }
+    },
+    {
+      "name": "14. Student POST /teachers — expect 403",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('403', () => pm.expect(pm.response.code).to.eql(403));"
+        ]}
+      }],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{student_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Bad\",\n  \"teacherId\": \"T-099\",\n  \"subject\": \"X\",\n  \"email\": \"bad@uni.edu\"\n}" },
+        "url": { "raw": "{{gateway}}/teachers", "host": ["{{gateway}}"], "path": ["teachers"] }
+      }
+    },
+    {
+      "name": "15. Admin lists teachers (200)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+        "url": { "raw": "{{gateway}}/teachers", "host": ["{{gateway}}"], "path": ["teachers"] }
+      }
+    },
+    {
+      "name": "16. Teacher lists teachers (200)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{teacher_token}}" }],
+        "url": { "raw": "{{gateway}}/teachers", "host": ["{{gateway}}"], "path": ["teachers"] }
+      }
+    },
+    {
+      "name": "17. Admin updates teacher (200)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{admin_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"subject\": \"Advanced Mathematics\"\n}" },
+        "url": { "raw": "{{gateway}}/teachers/{{teacher_id}}", "host": ["{{gateway}}"], "path": ["teachers", "{{teacher_id}}"] }
+      }
+    },
+    {
+      "name": "18. Student DELETE teacher — expect 403",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('403', () => pm.expect(pm.response.code).to.eql(403));"
+        ]}
+      }],
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{student_token}}" }],
+        "url": { "raw": "{{gateway}}/teachers/{{teacher_id}}", "host": ["{{gateway}}"], "path": ["teachers", "{{teacher_id}}"] }
+      }
+    },
+    {
+      "name": "19. Admin DELETE teacher (200)",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+        "url": { "raw": "{{gateway}}/teachers/{{teacher_id}}", "host": ["{{gateway}}"], "path": ["teachers", "{{teacher_id}}"] }
+      }
+    },
+    {
+      "name": "20. No token — expect 401",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('401', () => pm.expect(pm.response.code).to.eql(401));"
+        ]}
+      }],
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{gateway}}/students", "host": ["{{gateway}}"], "path": ["students"] }
+      }
+    },
+    {
+      "name": "21. Invalid token — expect 401",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('401', () => pm.expect(pm.response.code).to.eql(401));"
+        ]}
+      }],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer notarealtoken" }],
+        "url": { "raw": "{{gateway}}/teachers", "host": ["{{gateway}}"], "path": ["teachers"] }
+      }
+    },
+    {
+      "name": "22. Admin only: list all users",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+        "url": { "raw": "{{gateway}}/auth/users", "host": ["{{gateway}}"], "path": ["auth", "users"] }
+      }
+    },
+    {
+      "name": "23. Student GETs /auth/users — expect 403",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('403', () => pm.expect(pm.response.code).to.eql(403));"
+        ]}
+      }],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{student_token}}" }],
+        "url": { "raw": "{{gateway}}/auth/users", "host": ["{{gateway}}"], "path": ["auth", "users"] }
+      }
+    }
+  ]
+}

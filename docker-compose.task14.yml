@@ -1,0 +1,89 @@
+services:
+  mongo-auth:
+    image: mongo:7
+    container_name: task14-mongo-auth
+    ports:
+      - "27117:27017"
+    volumes:
+      - mongo-auth-data:/data/db
+    restart: unless-stopped
+
+  mongo-student:
+    image: mongo:7
+    container_name: task14-mongo-student
+    ports:
+      - "27118:27017"
+    volumes:
+      - mongo-student-data:/data/db
+    restart: unless-stopped
+
+  mongo-teacher:
+    image: mongo:7
+    container_name: task14-mongo-teacher
+    ports:
+      - "27119:27017"
+    volumes:
+      - mongo-teacher-data:/data/db
+    restart: unless-stopped
+
+  auth-service:
+    build: ./auth-service
+    container_name: task14-auth
+    ports:
+      - "5001:5001"
+    environment:
+      PORT: 5001
+      MONGO_URI: mongodb://mongo-auth:27017/auth_db
+      JWT_SECRET: task14_super_secret_key_change_me
+      JWT_EXPIRES_IN: 1d
+      SEED_ON_START: "true"
+    depends_on:
+      - mongo-auth
+    restart: unless-stopped
+
+  student-service:
+    build: ./Student_Microservice
+    container_name: task14-student
+    ports:
+      - "5002:5002"
+    environment:
+      PORT: 5002
+      MONGO_URI: mongodb://mongo-student:27017/student_db
+      JWT_SECRET: task14_super_secret_key_change_me
+    depends_on:
+      - mongo-student
+    restart: unless-stopped
+
+  teacher-service:
+    build: ./Teacher_Microservice
+    container_name: task14-teacher
+    ports:
+      - "5003:5003"
+    environment:
+      PORT: 5003
+      MONGO_URI: mongodb://mongo-teacher:27017/teacher_db
+      JWT_SECRET: task14_super_secret_key_change_me
+    depends_on:
+      - mongo-teacher
+    restart: unless-stopped
+
+  api-gateway:
+    build: ./APIGateway_Microservice
+    container_name: task14-gateway
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      AUTH_SERVICE_URL: http://auth-service:5001
+      STUDENT_SERVICE_URL: http://student-service:5002
+      TEACHER_SERVICE_URL: http://teacher-service:5003
+    depends_on:
+      - auth-service
+      - student-service
+      - teacher-service
+    restart: unless-stopped
+
+volumes:
+  mongo-auth-data:
+  mongo-student-data:
+  mongo-teacher-data:

@@ -1,37 +1,26 @@
 const app = require('./app');
 const db = require('./config/db');
-const envConfig = require('./config/env');
+const { PORT } = require('./config/env');
 
-const PORT = envConfig.PORT;
+async function start() {
+  await db.connect();
+  const server = app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Teacher service listening on port ${PORT}`);
+  });
 
-const startServer = async () => {
-  try {
-    await db.connect();
-
-    const server = app.listen(PORT, () => {
-      console.log(`Teacher Service is running on port ${PORT}`);
+  const shutdown = async (signal) => {
+    console.log(`${signal} received, shutting down`);
+    server.close(async () => {
+      await db.close();
+      process.exit(0);
     });
+  };
 
-    // Graceful shutdown
-    process.on('SIGTERM', () => {
-      console.log('SIGTERM signal received: closing HTTP server');
-      server.close(() => {
-        console.log('HTTP server closed');
-        db.close();
-      });
-    });
+  process.on('SIGINT', () => shutdown('SIGINT'));
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+}
 
-    process.on('SIGINT', () => {
-      console.log('SIGINT signal received: closing HTTP server');
-      server.close(() => {
-        console.log('HTTP server closed');
-        db.close();
-      });
-    });
-  } catch (error) {
-    console.error('Failed to start Teacher Service:', error.message);
-    process.exit(1);
-  }
-};
-
-startServer();
+start().catch((err) => {
+  console.error('Fatal start error:', err);
+  process.exit(1);
+});

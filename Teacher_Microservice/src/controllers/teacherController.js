@@ -1,149 +1,83 @@
-const { validationResult } = require('express-validator');
+const mongoose = require('mongoose');
 const Teacher = require('../models/Teacher');
-const studentApiService = require('../services/studentApiService');
 
-// POST /teachers/profile - Create teacher profile
-const createProfile = async (req, res, next) => {
+function isValidId(id) {
+  return mongoose.Types.ObjectId.isValid(id);
+}
+
+async function listTeachers(req, res) {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    const teachers = await Teacher.find().sort({ createdAt: -1 });
+    return res.status(200).json({ success: true, count: teachers.length, data: teachers });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+async function getTeacher(req, res) {
+  try {
+    if (!isValidId(req.params.id)) {
+      return res.status(400).json({ success: false, message: 'Invalid id' });
+    }
+    const teacher = await Teacher.findById(req.params.id);
+    if (!teacher) return res.status(404).json({ success: false, message: 'Teacher not found' });
+    return res.status(200).json({ success: true, data: teacher });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+async function createTeacher(req, res) {
+  try {
+    const { name, teacherId, subject, email } = req.body || {};
+    if (!name || !teacherId || !subject || !email) {
       return res.status(400).json({
         success: false,
-        message: 'Validation error',
-        errors: errors.array().map((e) => e.msg)
+        message: 'name, teacherId, subject and email are required'
       });
     }
-
-    const userId = req.user.userId;
-    const username = req.user.username;
-    const { fullName, email, faculty } = req.body;
-
-    // Check if teacher profile already exists
-    const existingTeacher = await Teacher.findOne({
-      $or: [{ userId }, { email }]
-    });
-
-    if (existingTeacher) {
-      return res.status(409).json({
-        success: false,
-        message: 'Teacher profile already exists'
-      });
+    const exists = await Teacher.findOne({ $or: [{ teacherId }, { email: email.toLowerCase() }] });
+    if (exists) {
+      return res.status(409).json({ success: false, message: 'teacherId or email already exists' });
     }
-
-    const teacher = new Teacher({
-      userId,
-      username,
-      fullName,
-      email,
-      faculty
-    });
-
-    await teacher.save();
-
-    return res.status(201).json({
-      success: true,
-      message: 'Teacher profile created successfully',
-      data: teacher
-    });
-  } catch (err) {
-    next(err);
+    const teacher = await Teacher.create({ name, teacherId, subject, email });
+    return res.status(201).json({ success: true, message: 'Teacher created', data: teacher });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
   }
-};
+}
 
-// GET /teachers/me - Get current teacher profile
-const getProfile = async (req, res, next) => {
+async function updateTeacher(req, res) {
   try {
-    const userId = req.user.userId;
-
-    const teacher = await Teacher.findOne({ userId });
-
-    if (!teacher) {
-      return res.status(404).json({
-        success: false,
-        message: 'Teacher profile not found'
-      });
+    if (!isValidId(req.params.id)) {
+      return res.status(400).json({ success: false, message: 'Invalid id' });
     }
-
-    return res.status(200).json({
-      success: true,
-      message: 'Teacher profile retrieved successfully',
-      data: teacher
+    const updates = {};
+    ['name', 'teacherId', 'subject', 'email'].forEach((k) => {
+      if (req.body[k] !== undefined) updates[k] = req.body[k];
     });
-  } catch (err) {
-    next(err);
+    const teacher = await Teacher.findByIdAndUpdate(req.params.id, updates, {
+      new: true,
+      runValidators: true
+    });
+    if (!teacher) return res.status(404).json({ success: false, message: 'Teacher not found' });
+    return res.status(200).json({ success: true, message: 'Teacher updated', data: teacher });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
   }
-};
+}
 
-// PUT /teachers/me - Update current teacher profile
-const updateProfile = async (req, res, next) => {
+async function deleteTeacher(req, res) {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        errors: errors.array().map((e) => e.msg)
-      });
+    if (!isValidId(req.params.id)) {
+      return res.status(400).json({ success: false, message: 'Invalid id' });
     }
-
-    const userId = req.user.userId;
-    const { fullName, email, faculty } = req.body;
-
-    const updateData = {};
-    if (fullName !== undefined) updateData.fullName = fullName;
-    if (email !== undefined) updateData.email = email;
-    if (faculty !== undefined) updateData.faculty = faculty;
-
-    const teacher = await Teacher.findOneAndUpdate(
-      { userId },
-      updateData,
-      { new: true, runValidators: true }
-    );
-
-    if (!teacher) {
-      return res.status(404).json({
-        success: false,
-        message: 'Teacher profile not found'
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: 'Teacher profile updated successfully',
-      data: teacher
-    });
-  } catch (err) {
-    next(err);
+    const teacher = await Teacher.findByIdAndDelete(req.params.id);
+    if (!teacher) return res.status(404).json({ success: false, message: 'Teacher not found' });
+    return res.status(200).json({ success: true, message: 'Teacher deleted' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
   }
-};
+}
 
-// GET /teachers/students/search - Search students
-const searchStudents = async (req, res, next) => {
-  try {
-    const { q } = req.query;
-
-    if (!q || !String(q).trim()) {
-      return res.status(400).json({
-        success: false,
-        message: 'Search query is required'
-      });
-    }
-
-    const students = await studentApiService.searchStudents(String(q).trim());
-
-    return res.status(200).json({
-      success: true,
-      message: 'Students search results',
-      data: students
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-module.exports = {
-  createProfile,
-  getProfile,
-  updateProfile,
-  searchStudents
-};
+module.exports = { listTeachers, getTeacher, createTeacher, updateTeacher, deleteTeacher };

@@ -1,32 +1,21 @@
 {
-  "name": "api-gateway-microservice",
+  "name": "api-gateway",
   "version": "1.0.0",
-  "description": "API Gateway for University Project Microservices",
-  "main": "api-gateway.js",
+  "description": "Task 14 - API Gateway (JWT routing to auth/student/teacher)",
+  "main": "src/server.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node api-gateway.js",
-    "dev": "nodemon api-gateway.js"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
-  "keywords": [
-    "api-gateway",
-    "microservices",
-    "express",
-    "jwt"
-  ],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "axios": "^1.14.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "helmet": "^7.0.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "http-proxy-middleware": "^2.0.6",
-    "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^3.1.0"
   }
 }

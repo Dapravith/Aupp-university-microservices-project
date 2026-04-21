@@ -1,17 +1,13 @@
-FROM node:24-alpine
+FROM node:20-alpine
 
 ENV NODE_ENV=production
-
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --omit=dev && npm cache clean --force
+RUN npm install --omit=dev && npm cache clean --force
 
-COPY . .
+COPY src ./src
 
-# Create logs directory for volume mount
-RUN mkdir -p /app/logs
+EXPOSE 5001
 
-EXPOSE 5004
-
-CMD ["node", "index.js"]
+CMD ["node", "src/server.js"]
